@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#8b5cf6">
+    <title>🔮 Cek Khodam Lucu - Versi Mobile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            touch-action: manipulation;
+            overflow-x: hidden;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .container {
+            background: white;
+            border-radius: 25px;
+            padding: 30px 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+            animation: slideUp 0.5s ease;
+            position: relative;
+        }
+
+        body.dark .container {
+            background: #2d2d44;
+            color: #fff;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: transform 0.2s;
+            user-select: none;
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.9) rotate(180deg);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #667eea;
+            margin-bottom: 10px;
+            user-select: none;
+        }
+
+        body.dark .header h1 {
+            color: #a78bfa;
+        }
+
+        .emoji-display {
+            font-size: 80px;
+            margin: 20px 0;
+            animation: float 3s ease-in-out infinite;
+            user-select: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        body.dark .subtitle {
+            color: #aaa;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 15px;
+            user-select: none;
+        }
+
+        body.dark label {
+            color: #fff;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
+            touch-action: manipulation;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        body.dark input {
+            background: #1a1a2e;
+            border-color: #444;
+            color: #fff;
+        }
+
+        body.dark input:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        body.dark .btn-secondary {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+            background: #e0e0e0;
+        }
+
+        body.dark .btn-secondary:active {
+            background: #0f0f1e;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            text-align: center;
+            animation: popIn 0.5s ease;
+            color: white;
+        }
+
+        body.dark .result {
+            background: linear-gradient(135deg, #4a148c 0%, #880e4f 100%);
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .result h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            user-select: none;
+        }
+
+        .khodam-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .khodam-desc {
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+            user-select: none;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .history {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        body.dark .history {
+            background: #1a1a2e;
+        }
+
+        .history h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+            user-select: none;
+        }
+
+        body.dark .history h3 {
+            color: #a78bfa;
+        }
+
+        .history-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        body.dark .history-item {
+            background: #2d2d44;
+            border-left-color: #a78bfa;
+        }
+
+        .empty-history {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+            user-select: none;
+        }
+
+        .share-btn {
+            margin-top: 15px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .share-btn:active {
+            transform: scale(0.98);
+        }
+
+        .lucky-number {
+            display: inline-block;
+            background: rgba(255,215,0,0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: bold;
+        }
+
+        .power-meter {
+            margin: 15px 0;
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .power-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.1); }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 15px;
+            font-size: 12px;
+            margin: 3px;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeBtn">🌙</button>
+    
+    <div class="container">
+        <div class="header">
+            <div class="emoji-display">🔮</div>
+            <h1>Cek Khodam Lucu</h1>
+            <p class="subtitle">Temukan khodam unik & lucumu sekarang! 😄</p>
+        </div>
+
+        <div class="input-group">
+            <label for="nama">📝 Masukkan Namamu:</label>
+            <input type="text" id="nama" placeholder="Tulis nama atau nickname kamu..." autocomplete="off">
+        </div>
+
+        <div class="input-group">
+            <label for="tanggal">📅 Tanggal Lahir (Opsional):</label>
+            <input type="text" id="tanggal" placeholder="Contoh: 17 atau kosongkan" maxlength="2" inputmode="numeric">
+        </div>
+
+        <button class="btn btn-primary" id="btnCek">
+            🔮 Cek Khodam Sekarang!
+        </button>
+
+        <button class="btn btn-secondary" id="btnRandom">
+            🎲 Khodam Random
+        </button>
+
+        <div id="result"></div>
+
+        <div class="history" id="historySection" style="display:none;">
+            <h3>📜 Riwayat Pengecekan</h3>
+            <div id="historyList"></div>
+            <button class="btn btn-secondary" id="btnClearHistory" style="margin-top:10px;">
+                🗑️ Hapus Riwayat
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const khodamList = [
+            { name: "Sendal Swallow Bekas Nyasar", desc: "Sepasang sendal tapi yang satunya hilang 3 tahun lalu, masih setia nungguin pasangannya di kolong lemari", power: 15, luck: "Barang hilang ketemu", emoji: "🩴" },
+            { name: "Galon Aqua Kosong Penjaga Kosan", desc: "Udah kosong tapi masih dipajang di depan pintu biar tukang galon ga lewat", power: 22, luck: "Ga pernah kehausan", emoji: "💧" },
+            { name: "Tisu Magic Bekas Konser", desc: "Sisa tisu yang dipake ngelap keringetan pas konser idol kesayangan 5 tahun lalu, disimpen rapi di album foto", power: 8, luck: "Ketemu jodoh sesama wibu", emoji: "🧻" },
+            { name: "Tikus Got Entrepreneur", desc: "Punya bisnis jualan keju ilegal di gang belakang", power: 68, luck: "Selalu menang guessing game", emoji: "🐀" },
+            { name: "Semut Merah Motivator", desc: "Selalu bilang 'kamu pasti bisa!' sambil gigit kaki kamu", power: 77, luck: "Order gojek cepat datang", emoji: "🐜" },
+            { name: "Kadal Tembok Skena", desc: "Suka pamer putus-nyambung ekor depan temen-temennya", power: 61, luck: "Dapat promo 12.12", emoji: "🦎" },
+            { name: "Kecoa Terbang Jet Tempur", desc: "Pilot terbaik, bikin kamu lari marathon di rumah sendiri", power: 88, luck: "Charging HP super cepat", emoji: "🪳" },
+            { name: "Tokek Nyinyir", desc: "Selalu komen 'ck ck ck' tiap kamu mau tidur", power: 70, luck: "Paket COD ga pernah bayar", emoji: "🦎" },
+            { name: "Ayam Tetangga Ambisius", desc: "Bangunin kamu jam 4 pagi buat sukses bareng", power: 82, luck: "Selalu dapat sisa kue", emoji: "🐔" },
+            { name: "Bebek Ngitung Jomblo", desc: "Tiap hari ngingetin udah berapa lama kamu sendirian", power: 55, luck: "Chat langsung di read", emoji: "🦆" },
+            { name: "Capung Ngesot", desc: "Sayapnya lepas, sekarang jadi ojek online sayap cadangan", power: 64, luck: "Ujan selalu bawa payung", emoji: "🦟" },
+            { name: "Belalang Ngemis", desc: "Pinjem duit 5000 udah 3 tahun ga balikin", power: 45, luck: "Utang dilupain", emoji: "🦗" },
+            { name: "Nyamuk Vocalist", desc: "Suka nyanyi di kuping jam 2 pagi, genre jazz", power: 73, luck: "Skin ML gratis", emoji: "🦟" },
+            { name: "Sapi Sultan", desc: "Tajir melintir, tapi tetep makan rumput", power: 90, luck: "Dapat warisan tante", emoji: "🐄" },
+            { name: "Kambing Gibah", desc: "Tau semua gosip komplek, update 24/7", power: 59, luck: "Drama orang lain seru", emoji: "🐐" },
+            { name: "Monyet TikToker", desc: "Kontennya joget sambil makan pisang, 10 juta followers", power: 87, luck: "FYP terus", emoji: "🐵" },
+            { name: "Burung Hantu Insomnia", desc: "Ga bisa tidur, ngajak kamu begadang sambil bahas filosofi", power: 76, luck: "Ide bagus tengah malam", emoji: "🦉" },
+            { name: "Ular Tangga Viper", desc: "Bikin hidup kamu naik-turun kayak main ular tangga", power: 81, luck: "Main dadu angka 6 mulu", emoji: "🐍" },
+            { name: "Kelinci Percobaan", desc: "Jadi korban experiment masakan temen-temen", power: 52, luck: "Ga mati makan masakan temen", emoji: "🐰" },
+            { name: "Gajah Pelupa", desc: "Katanya gajah ga bisa lupa, ini gajah defect", power: 48, luck: "Lupa mantan", emoji: "🐘" },
+            { name: "Kupu-Kupu Galau", desc: "Suka hinggap di taman sambil baca sajak cinta", power: 66, luck: "Dapat gebetan baru", emoji: "🦋" },
+            { name: "Laba-Laba WiFi", desc: "Jarring sinyal internet paling kenceng se-komplek", power: 84, luck: "Netflix ga buffering", emoji: "🕷️" },
+            { name: "Siput Turbo", desc: "Lambat tapi pasti, kayak progres nabung kamu", power: 41, luck: "Cicilan lunas", emoji: "🐌" },
+            { name: "Kerang Introvert", desc: "Cangkangnya lebih sering ditutup daripada dibuka", power: 38, luck: "Ga diajak nongkrong toxic", emoji: "🐚" },
+            { name: "Kepiting Zodiak", desc: "Mood swing tiap hari, minggu ini baik minggu depan nyapit", power: 71, luck: "Zodiak cocok sama gebetan", emoji: "🦀" },
+            { name: "Ubur-Ubur Transparansi", desc: "Semua orang bisa liat isi hatimu, privacy 0%", power: 44, luck: "Jujur dihargai", emoji: "🪼" },
+            { name: "Singa Pemalu", desc: "Rajanya hutan tapi takut ama cicak", power: 89, luck: "Wibawa tinggi tapi humble", emoji: "🦁" },
+            { name: "Buaya Darat Premium", desc: "Rayuan mautnya bisa bikin semua orang klenger", power: 92, luck: "Chat dibales cepet", emoji: "🐊" },
+            { name: "Kodok Nyanyi Dangdut", desc: "Kalo ujan pasti nyanyi 'Banyu Moto' dari kolam", power: 63, luck: "Karaoke selalu dapet mic", emoji: "🐸" },
+            { name: "Pinguin Tropis", desc: "Tinggal di Indonesia tapi pake jaket terus kepanasan", power: 57, luck: "AC ga pernah rusak", emoji: "🐧" },
+            { name: "Komodo Gamers", desc: "Pro player Mobile Legends, ranked Mythical Glory dari zaman batu", power: 91, luck: "Savage terus", emoji: "🦎" },
+            { name: "Babi Ngepet Startup", desc: "Punya usaha fintech tapi modalnya ilmu hitam", power: 86, luck: "Investor datang sendiri", emoji: "🐷" },
+            { name: "Kuda Lumping Clubbing", desc: "Siang joget kesurupan, malem clubbing di SCBD", power: 79, luck: "Masuk club gratis", emoji: "🐴" },
+            { name: "Naga Kost-Kostan", desc: "Naga legendaris tapi ngekost 500rb sebulan, kamar mandi luar", power: 93, luck: "Dapet kamar wifi kenceng", emoji: "🐉" },
+            { name: "Hantu Jeruk Purut", desc: "Nongol cuma buat ngasih tips masak rendang", power: 54, luck: "Masakan enak terus", emoji: "👻" },
+            { name: "Pocong TikTok", desc: "Lompat-lompat sambil joget, trending #1 For You Page", power: 75, luck: "Video viral instant", emoji: "👻" },
+            { name: "Kunti Kost", desc: "Suka pinjam shampo tetangga kost, ga pernah balikin", power: 62, luck: "Toiletries gratis", emoji: "👻" },
+            { name: "Genderuwo Gym", desc: "Badan sixpack tapi masih suka nakutin orang jogging pagi", power: 88, luck: "Gym membership murah", emoji: "👹" },
+            { name: "Tuyul Crypto", desc: "Dulu curi receh, sekarang jadi trader Bitcoin sukses", power: 94, luck: "Investasi profit terus", emoji: "👶" },
+            { name: "Leak Barber Shop", desc: "Bisa terbang pake usus, side job jadi tukang cukur", power: 67, luck: "Potongan rambut selalu oke", emoji: "👺" },
+            { name: "Wewe Gombel Daycare", desc: "Dulu culik anak, sekarang buka TK legal berbadan hukum", power: 71, luck: "Anak nurut", emoji: "👵" },
+            { name: "Sundel Bolong Influencer", desc: "Endorse produk kecantikan padahal punggungnya bolong", power: 58, luck: "Skincare cocok terus", emoji: "👰" },
+            { name: "Jin Ifrit Pemadam Kebakaran", desc: "Dari elemen api tapi jadi pemadam, ironis banget", power: 96, luck: "Ga pernah kena panas", emoji: "🔥" },
+            { name: "Vampire Donor Darah", desc: "Donasi darah tiap bulan buat nutupin minum darah orang", power: 83, luck: "Golongan darah match", emoji: "🧛" },
+            { name: "Zombie Skincare Addict", desc: "Kulitnya udah busuk tapi masih pake serum 10 step", power: 47, luck: "Jerawat ga pernah tumbuh", emoji: "🧟" },
+            { name: "Mummy Thrift Shop", desc: "Jualan perban bekas buat fashion vintage", power: 56, luck: "Dapet barang branded murah", emoji: "🧟‍♂️" },
+            { name: "Werewolf Grooming", desc: "Sebulan sekali wajib ke salon, bulu tumbuh unlimited", power: 80, luck: "Rambut ga rontok", emoji: "🐺" },
+            { name: "Fairy Odading", desc: "Peri cantik tapi kerjanya jualan gorengan di pinggir jalan", power: 65, luck: "Dagangan laris", emoji: "🧚" },
+            { name: "Goblin Reseller", desc: "Beli barang murah jual mahal, strategi marketing legend", power: 78, luck: "Barang cepet laku", emoji: "👺" },
+            { name: "Alien Gojek", desc: "Dari planet jauh tapi sekarang jadi driver ojol bintang 5", power: 85, luck: "Bonus gede tiap hari", emoji: "👽" },
+            { name: "Setan Gundul Stand Up Comedy", desc: "Receh abis, spesialisasi jokes tentang kebotakan", power: 69, luck: "Jokes selalu ditawa", emoji: "😈" },
+            { name: "Iblis Kelapa Muda", desc: "Jualan es kelapa muda di neraka, surprisingly laku", power: 74, luck: "Bisnis lancar jaya", emoji: "😈" },
+            { name: "Siluman Kucing E-Sport", desc: "Jago main game, TPM 300, reflex dewa", power: 90, luck: "Menang turnamen", emoji: "🐱" },
+            { name: "Raksasa Skinny Jeans", desc: "Tinggi 5 meter tapi pake celana ketat, struggle setiap hari", power: 77, luck: "Baju ukuran selalu ada", emoji: "🗿" },
+            { name: "Peri Galau Sad Boy", desc: "Tongkat sihirnya dipake ngetik quotes patah hati", power: 51, luck: "Curhat didengar orang", emoji: "🧚‍♂️" },
+            { name: "Manusia Silver Busway", desc: "Serius banget patung di Transjakarta, ga pernah gerak walau digodain", power: 43, luck: "Naik busway gratis", emoji: "🗿" },
+            { name: "Cacing Tanah Motivator", desc: "Hidup di tanah tapi ngajarin kamu aim for the
